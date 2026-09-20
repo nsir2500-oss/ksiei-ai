@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KSIEI - AI Assistant</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#0b0d10;
+  color:#fff;
+  height:100vh;
+  overflow:hidden;
+}
+
+.app{
+  display:flex;
+  height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  background:#111418;
+  border-right:1px solid #252a31;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:800;
+  margin-bottom:25px;
+}
+
+.logo span{
+  color:#6c8cff;
+}
+
+.new-chat{
+  background:#20252c;
+  border:1px solid #303640;
+  color:white;
+  padding:12px;
+  border-radius:10px;
+  cursor:pointer;
+  text-align:left;
+  font-size:15px;
+}
+
+.menu{
+  margin-top:20px;
+}
+
+.menu button{
+  width:100%;
+  padding:12px;
+  margin-bottom:5px;
+  background:transparent;
+  border:0;
+  color:#c9ced6;
+  text-align:left;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.menu button:hover{
+  background:#1d2228;
+  color:white;
+}
+
+.history{
+  margin-top:20px;
+  flex:1;
+  overflow:auto;
+}
+
+.history-title{
+  color:#777f8c;
+  font-size:12px;
+  margin-bottom:10px;
+}
+
+.history-item{
+  padding:9px;
+  color:#b9bec7;
+  border-radius:7px;
+  cursor:pointer;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.history-item:hover{
+  background:#1b2026;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.topbar{
+  height:60px;
+  border-bottom:1px solid #252a31;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+}
+
+.model{
+  background:#181c21;
+  border:1px solid #303640;
+  padding:8px 12px;
+  border-radius:8px;
+  color:white;
+}
+
+.profile{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  background:#6c8cff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+
+.chat{
+  flex:1;
+  overflow:auto;
+  padding:35px 15%;
+}
+
+.welcome{
+  text-align:center;
+  margin-top:10vh;
+}
+
+.welcome h1{
+  font-size:38px;
+  margin-bottom:12px;
+}
+
+.welcome p{
+  color:#9299a5;
+  font-size:16px;
+}
+
+.examples{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  max-width:700px;
+  margin:35px auto;
+}
+
+.example{
+  border:1px solid #303640;
+  background:#12161b;
+  padding:18px;
+  border-radius:12px;
+  text-align:left;
+  cursor:pointer;
+  color:#d8dce2;
+}
+
+.example:hover{
+  background:#1a1f25;
+}
+
+/* MESSAGES */
+.message{
+  margin:20px auto;
+  max-width:750px;
+}
+
+.user{
+  background:#20252c;
+  padding:14px 16px;
+  border-radius:15px;
+  margin-left:auto;
+  width:max-content;
+  max-width:85%;
+}
+
+.ai{
+  color:#e0e4ea;
+  line-height:1.6;
+}
+
+/* COMPOSER */
+.composer-area{
+  padding:15px 15%;
+}
+
+.composer{
+  max-width:800px;
+  margin:auto;
+  background:#171b20;
+  border:1px solid #343a43;
+  border-radius:18px;
+  padding:10px;
+}
+
+textarea{
+  width:100%;
+  background:transparent;
+  border:0;
+  outline:none;
+  resize:none;
+  color:white;
+  padding:10px;
+  font-size:15px;
+  min-height:45px;
+}
+
+.composer-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.tools button{
+  background:transparent;
+  border:0;
+  color:#9da4ae;
+  font-size:20px;
+  cursor:pointer;
+  margin-right:8px;
+}
+
+.send{
+  background:#6c8cff;
+  border:0;
+  color:white;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+
+.sidebar{
+  display:none;
+}
+
+.topbar{
+  padding:0 12px;
+}
+
+.chat{
+  padding:25px 15px;
+}
+
+.composer-area{
+  padding:10px;
+}
+
+.welcome h1{
+  font-size:28px;
+}
+
+.examples{
+  grid-template-columns:1fr;
+  margin-top:25px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      KS<span>IEI</span>
+    </div>
+
+    <button class="new-chat" onclick="newChat()">
+      ＋ New Chat
+    </button>
+
+    <div class="menu">
+      <button onclick="showSearch()">🔍 Search</button>
+      <button onclick="showProjects()">📁 Projects</button>
+      <button onclick="showBuilder()">🌐 Website Builder</button>
+      <button onclick="showSettings()">⚙️ Settings</button>
+    </div>
+
+    <div class="history">
+      <div class="history-title">CHAT HISTORY</div>
+      <div id="historyList"></div>
+    </div>
+
+  </aside>
+
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <select class="model">
+        <option>KSIEI AI</option>
+        <option>KSIEI Fast</option>
+        <option>KSIEI Creative</option>
+      </select>
+
+      <div class="profile">S</div>
+
+    </header>
+
+
+    <section class="chat" id="chat">
+
+      <div class="welcome" id="welcome">
+
+        <h1>What can I help you build?</h1>
+
+        <p>
+          Ask KSIEI anything or create a website with AI.
+        </p>
+
+        <div class="examples">
+
+          <div class="example"
+               onclick="useExample('Create a modern shopping website')">
+            🌐 Create a website
+          </div>
+
+          <div class="example"
+               onclick="useExample('Explain artificial intelligence simply')">
+            🤖 Ask AI
+          </div>
+
+          <div class="example"
+               onclick="useExample('Write HTML code for a portfolio')">
+            💻 Write code
+          </div>
+
+          <div class="example"
+               onclick="useExample('Create a business website')">
+            🚀 Build a business
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <div class="composer-area">
+
+      <div class="composer">
+
+        <textarea
+          id="prompt"
+          placeholder="Message KSIEI..."
+          onkeydown="handleKey(event)">
+        </textarea>
+
+        <div class="composer-bottom">
+
+          <div class="tools">
+            <button onclick="attachFile()">＋</button>
+            <button onclick="voice()">🎙️</button>
+          </div>
+
+          <button class="send" onclick="sendMessage()">
+            ↑
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+
+<script>
+
+let chats = [];
+
+function sendMessage(){
+
+  const input = document.getElementById("prompt");
+  const text = input.value.trim();
+
+  if(!text) return;
+
+  document.getElementById("welcome").style.display="none";
+
+  const chat = document.getElementById("chat");
+
+  const user = document.createElement("div");
+  user.className="message";
+
+  user.innerHTML =
+    '<div class="user">'+escapeHTML(text)+'</div>';
+
+  chat.appendChild(user);
+
+  input.value="";
+
+  const ai = document.createElement("div");
+  ai.className="message";
+
+  ai.innerHTML =
+    '<div class="ai">KSIEI is processing your request...<br><br>' +
+    'This is the testing interface. Real AI will be connected to the secure backend in the next stage.</div>';
+
+  chat.appendChild(ai);
+
+  chat.scrollTop=chat.scrollHeight;
+
+  chats.push(text);
+  updateHistory();
+}
+
+
+function useExample(text){
+
+  document.getElementById("prompt").value=text;
+
+  document.getElementById("prompt").focus();
+}
+
+
+function newChat(){
+
+  document.getElementById("chat").innerHTML=`
+
+    <div class="welcome" id="welcome">
+
+      <h1>What can I help you build?</h1>
+
+      <p>Ask KSIEI anything or create a website with AI.</p>
+
+      <div class="examples">
+
+        <div class="example"
+        onclick="useExample('Create a modern shopping website')">
+        🌐 Create a website
+        </div>
+
+        <div class="example"
+        onclick="useExample('Explain artificial intelligence simply')">
+        🤖 Ask AI
+        </div>
+
+        <div class="example"
+        onclick="useExample('Write HTML code for a portfolio')">
+        💻 Write code
+        </div>
+
+        <div class="example"
+        onclick="useExample('Create a business website')">
+        🚀 Build a business
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+function updateHistory(){
+
+  const list=document.getElementById("historyList");
+
+  list.innerHTML="";
+
+  chats.slice().reverse().forEach((chat)=>{
+
+    const item=document.createElement("div");
+
+    item.className="history-item";
+
+    item.textContent=chat;
+
+    list.appendChild(item);
+
+  });
+
+}
+
+
+function showSearch(){
+  alert("Search interface — next development stage.");
+}
+
+
+function showProjects(){
+  alert("Projects — next development stage.");
+}
+
+
+function showBuilder(){
+  alert("AI Website Builder — next development stage.");
+}
+
+
+function showSettings(){
+  alert("Settings — next development stage.");
+}
+
+
+function attachFile(){
+  alert("File upload will be connected in the next stage.");
+}
+
+
+function voice(){
+  alert("Voice input will be connected in the next stage.");
+}
+
+
+function handleKey(event){
+
+  if(event.key==="Enter" && !event.shiftKey){
+
+    event.preventDefault();
+
+    sendMessage();
+
+  }
+
+}
+
+
+function escapeHTML(text){
+
+  const div=document.createElement("div");
+
+  div.textContent=text;
+
+  return div.innerHTML;
+
+}
+
+</script>
+
+</body>
+</html>
