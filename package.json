@@ -1,0 +1,12 @@
+{
+  "name": "ksiei-ai-backend",
+  "version": "1.0.0",
+  "description": "KSIEI AI backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
