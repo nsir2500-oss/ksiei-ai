@@ -3,435 +3,488 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>KSIEI - AI Assistant</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
-    font-family:Arial,sans-serif;
-    background:#080b12;
-    color:white;
-    height:100vh;
-    overflow:hidden;
-}
-
-/* Animated background */
-body:before,
-body:after{
-    content:"";
-    position:fixed;
-    width:500px;
-    height:500px;
-    border-radius:50%;
-    filter:blur(90px);
-    opacity:.25;
-    pointer-events:none;
-    z-index:-1;
-}
-
-body:before{
-    background:#5865f2;
-    top:-250px;
-    left:-200px;
-    animation:move1 8s infinite alternate;
-}
-
-body:after{
-    background:#9b5cff;
-    right:-200px;
-    bottom:-250px;
-    animation:move2 10s infinite alternate;
-}
-
-@keyframes move1{
-    to{transform:translate(200px,150px)}
-}
-
-@keyframes move2{
-    to{transform:translate(-150px,-100px)}
+  font-family:Arial,Helvetica,sans-serif;
+  background:#0b0d12;
+  color:#fff;
+  height:100vh;
+  overflow:hidden;
 }
 
 /* LOGIN */
-#loginScreen{
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#080b12;
-    z-index:100;
+.login{
+  position:fixed;
+  inset:0;
+  background:#0b0d12;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
 }
 
-.loginBox{
-    width:90%;
-    max-width:400px;
-    padding:32px;
-    border-radius:24px;
-    background:#111620ee;
-    border:1px solid #ffffff15;
-    text-align:center;
-    box-shadow:0 20px 70px #0008;
+.login-box{
+  width:90%;
+  max-width:420px;
+  padding:35px;
+  border:1px solid #292d38;
+  border-radius:25px;
+  background:#11141b;
+  text-align:center;
 }
 
-.loginLogo{
-    font-size:38px;
-    font-weight:bold;
-    margin-bottom:8px;
+.login-logo{
+  font-size:42px;
+  font-weight:800;
+  margin-bottom:10px;
 }
 
-.loginLogo span,
-.logo span{
-    color:#7885ff;
+.login-logo span{
+  color:#7c5cff;
 }
 
-.loginBox p{
-    color:#929aaa;
-    margin-bottom:25px;
+.login-box p{
+  color:#9ca3af;
+  margin-bottom:25px;
 }
 
-.loginInput{
-    width:100%;
-    padding:14px;
-    margin-bottom:12px;
-    border-radius:12px;
-    border:1px solid #ffffff15;
-    outline:none;
-    background:#080b12;
-    color:white;
+.login-box input{
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border-radius:12px;
+  border:1px solid #303541;
+  background:#181c25;
+  color:white;
+  outline:none;
 }
 
-.loginBtn{
-    width:100%;
-    padding:14px;
-    border:0;
-    border-radius:12px;
-    color:white;
-    font-weight:bold;
-    background:linear-gradient(135deg,#5865f2,#965cff);
-    cursor:pointer;
+.login-box button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border:0;
+  border-radius:12px;
+  background:#7c5cff;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
 }
 
 /* APP */
-#app{
-    display:none;
-    height:100vh;
+.app{
+  display:none;
+  height:100vh;
 }
 
 /* SIDEBAR */
 .sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    width:255px;
-    height:100%;
-    padding:20px;
-    background:#0d111aee;
-    border-right:1px solid #ffffff0d;
-    z-index:50;
+  width:260px;
+  height:100vh;
+  background:#10131a;
+  border-right:1px solid #252936;
+  padding:20px;
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:100;
+  transition:.3s;
 }
 
 .logo{
-    font-size:25px;
-    font-weight:bold;
-    margin-bottom:25px;
+  font-size:27px;
+  font-weight:800;
+  margin-bottom:25px;
+}
+
+.logo span{
+  color:#7c5cff;
 }
 
 .newChat{
-    width:100%;
-    padding:13px;
-    border:1px solid #ffffff15;
-    border-radius:12px;
-    background:#171d29;
-    color:white;
-    text-align:left;
-    cursor:pointer;
-    margin-bottom:15px;
+  width:100%;
+  padding:13px;
+  border:1px solid #303541;
+  background:#181c25;
+  color:white;
+  border-radius:12px;
+  font-size:15px;
+  cursor:pointer;
+  margin-bottom:20px;
+}
+
+.newChat:hover{
+  background:#222734;
 }
 
 .menu button{
-    width:100%;
-    padding:13px;
-    border:0;
-    border-radius:10px;
-    background:transparent;
-    color:#aeb5c5;
-    text-align:left;
-    cursor:pointer;
-    margin-bottom:3px;
+  width:100%;
+  text-align:left;
+  padding:13px;
+  margin:4px 0;
+  border:0;
+  background:transparent;
+  color:#c7cad3;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:15px;
 }
 
 .menu button:hover{
-    background:#ffffff0b;
-    color:white;
+  background:#1c202a;
+  color:white;
+}
+
+.menu button.active{
+  background:#252034;
+  color:#a895ff;
 }
 
 /* MAIN */
 .main{
-    margin-left:255px;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
+  margin-left:260px;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
+/* TOPBAR */
 .topbar{
-    height:65px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 22px;
-    border-bottom:1px solid #ffffff0d;
-    background:#080b12aa;
-    backdrop-filter:blur(15px);
+  height:65px;
+  border-bottom:1px solid #252936;
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  gap:15px;
+  background:#0e1016;
 }
 
-.mobileMenu{
-    display:none;
-    background:none;
-    border:0;
-    color:white;
-    font-size:22px;
-    margin-right:10px;
+.mobile-menu{
+  display:none;
+  background:none;
+  border:0;
+  color:white;
+  font-size:25px;
+}
+
+.back-btn{
+  border:1px solid #303541;
+  background:#181c25;
+  color:white;
+  padding:9px 13px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.screen-title{
+  font-size:18px;
+  font-weight:600;
 }
 
 .model{
-    background:#151a26;
-    padding:9px 14px;
-    border-radius:10px;
-    font-size:14px;
+  margin-left:auto;
+  padding:9px 13px;
+  border-radius:10px;
+  background:#181c25;
+  border:1px solid #303541;
+  color:white;
 }
 
-.profile{
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#5865f2,#9b5cff);
-    font-weight:bold;
+/* CONTENT */
+.content{
+  flex:1;
+  overflow-y:auto;
+  position:relative;
 }
 
-/* CHAT */
-.chatArea{
-    flex:1;
-    overflow-y:auto;
-    padding:35px 15px 150px;
+/* HOME */
+.home{
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:30px;
+  text-align:center;
 }
 
-.welcome{
-    max-width:850px;
-    margin:65px auto 0;
-    text-align:center;
+.home h1{
+  font-size:45px;
+  margin-bottom:12px;
 }
 
-.welcome h1{
-    font-size:45px;
-    margin-bottom:12px;
-    background:linear-gradient(90deg,#fff,#8d9aff,#d49cff);
-    -webkit-background-clip:text;
-    color:transparent;
+.gradient{
+  background:linear-gradient(90deg,#8b6cff,#5ce1e6);
+  -webkit-background-clip:text;
+  color:transparent;
 }
 
-.welcome p{
-    color:#9098aa;
+.home p{
+  color:#9ca3af;
+  font-size:17px;
+  margin-bottom:35px;
 }
 
 .cards{
-    max-width:700px;
-    margin:30px auto;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  max-width:650px;
+  width:100%;
 }
 
 .card{
-    padding:20px;
-    border-radius:17px;
-    border:1px solid #ffffff10;
-    background:#111620aa;
-    text-align:left;
-    cursor:pointer;
+  padding:20px;
+  border:1px solid #292d38;
+  background:#11141b;
+  border-radius:18px;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
 }
 
 .card:hover{
-    background:#181e2a;
+  transform:translateY(-3px);
+  border-color:#6750d9;
 }
 
-.card strong{
-    display:block;
-    margin-bottom:7px;
+.card h3{
+  margin-bottom:7px;
 }
 
-.card span{
-    color:#8f97a8;
-    font-size:13px;
+.card p{
+  color:#858b98;
+  font-size:14px;
 }
 
-/* MESSAGES */
+/* CHAT */
+.chat{
+  min-height:100%;
+  padding:30px;
+  padding-bottom:120px;
+}
+
 .message{
-    max-width:850px;
-    margin:15px auto;
-    padding:16px 18px;
-    border-radius:15px;
-    line-height:1.6;
+  max-width:800px;
+  margin:15px auto;
+  padding:16px 18px;
+  border-radius:16px;
+  line-height:1.6;
 }
 
-.userMessage{
-    background:#181e2a;
+.user{
+  background:#252936;
 }
 
-.aiMessage{
-    background:#10151e;
-    border:1px solid #ffffff08;
+.ai{
+  background:#151922;
+  border:1px solid #272c37;
 }
 
 /* COMPOSER */
-.composerWrap{
-    position:fixed;
-    bottom:0;
-    left:255px;
-    right:0;
-    padding:18px;
-    background:linear-gradient(transparent,#080b12 30%);
+.composer-wrap{
+  position:absolute;
+  bottom:20px;
+  left:30px;
+  right:30px;
 }
 
 .composer{
-    max-width:850px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    gap:9px;
-    padding:9px;
-    border:1px solid #ffffff17;
-    border-radius:20px;
-    background:#111620ee;
-    backdrop-filter:blur(18px);
+  max-width:850px;
+  margin:auto;
+  background:#151922;
+  border:1px solid #303541;
+  border-radius:20px;
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 
-#prompt{
-    flex:1;
-    padding:10px;
-    background:transparent;
-    border:0;
-    outline:none;
-    color:white;
-    font-size:15px;
+.composer input{
+  flex:1;
+  background:transparent;
+  border:0;
+  outline:0;
+  color:white;
+  padding:12px;
+  font-size:15px;
 }
 
-.iconBtn,
-.sendBtn{
-    width:42px;
-    height:42px;
-    border:0;
-    border-radius:50%;
-    cursor:pointer;
+.send-btn,
+.voice-btn{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:0;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.iconBtn{
-    background:#1b2130;
-    color:white;
-    font-size:22px;
+.send-btn{
+  background:#7c5cff;
+  color:white;
+  font-size:18px;
 }
 
-.sendBtn{
-    background:linear-gradient(135deg,#5865f2,#965cff);
-    color:white;
-    font-size:20px;
-}
-
-/* MODERN VOICE BUTTON */
-.voiceBtn{
-    width:44px;
-    height:44px;
-    border-radius:50%;
-    border:1px solid #ffffff18;
-    background:#171d29;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    position:relative;
+.voice-btn{
+  background:#242936;
+  border:1px solid #383e4d;
+  position:relative;
 }
 
 .mic{
-    width:13px;
-    height:20px;
-    border:2px solid #e5e8ff;
-    border-radius:10px;
-    position:relative;
+  width:10px;
+  height:17px;
+  border:2px solid white;
+  border-radius:8px;
+  position:relative;
 }
 
 .mic:after{
-    content:"";
-    position:absolute;
-    width:19px;
-    height:10px;
-    left:50%;
-    top:14px;
-    transform:translateX(-50%);
-    border:2px solid #8793ff;
-    border-top:0;
-    border-radius:0 0 12px 12px;
+  content:"";
+  position:absolute;
+  width:15px;
+  height:9px;
+  border:2px solid white;
+  border-top:0;
+  border-radius:0 0 10px 10px;
+  left:50%;
+  top:12px;
+  transform:translateX(-50%);
 }
 
-.mic:before{
-    content:"";
-    position:absolute;
-    width:2px;
-    height:7px;
-    background:#8793ff;
-    left:50%;
-    top:23px;
-    transform:translateX(-50%);
-}
-
-.voiceBtn.listening{
-    background:linear-gradient(135deg,#5865f2,#9b5cff);
-    box-shadow:0 0 0 7px #5865f233,0 0 30px #5865f288;
-    animation:pulse 1.2s infinite;
+.voice-btn.listening{
+  background:#7c5cff;
+  box-shadow:0 0 0 7px rgba(124,92,255,.15);
+  animation:pulse 1s infinite;
 }
 
 @keyframes pulse{
-    50%{transform:scale(1.08)}
+  50%{
+    transform:scale(1.08);
+  }
+}
+
+/* OTHER SCREENS */
+.page{
+  padding:35px;
+  max-width:1000px;
+  margin:auto;
+}
+
+.page h1{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.page-subtitle{
+  color:#9298a6;
+  margin-bottom:30px;
+}
+
+.panel{
+  background:#11141b;
+  border:1px solid #292d38;
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:15px;
+}
+
+.panel h3{
+  margin-bottom:8px;
+}
+
+.panel p{
+  color:#8f95a3;
+  line-height:1.6;
+}
+
+.search-box{
+  width:100%;
+  padding:15px;
+  background:#151922;
+  color:white;
+  border:1px solid #303541;
+  border-radius:12px;
+  outline:none;
+  margin-bottom:20px;
+}
+
+.builder-input{
+  width:100%;
+  min-height:150px;
+  background:#151922;
+  color:white;
+  border:1px solid #303541;
+  border-radius:12px;
+  padding:15px;
+  resize:vertical;
+  outline:none;
+}
+
+.primary{
+  margin-top:15px;
+  padding:12px 18px;
+  border:0;
+  border-radius:10px;
+  background:#7c5cff;
+  color:white;
+  cursor:pointer;
 }
 
 /* MOBILE */
-@media(max-width:700px){
+@media(max-width:800px){
 
-    .sidebar{
-        transform:translateX(-100%);
-        transition:.25s;
-    }
+  .sidebar{
+    transform:translateX(-100%);
+    width:270px;
+  }
 
-    .sidebar.open{
-        transform:translateX(0);
-    }
+  .sidebar.open{
+    transform:translateX(0);
+  }
 
-    .main{
-        margin-left:0;
-    }
+  .main{
+    margin-left:0;
+  }
 
-    .composerWrap{
-        left:0;
-        padding:10px;
-    }
+  .mobile-menu{
+    display:block;
+  }
 
-    .mobileMenu{
-        display:block;
-    }
+  .home h1{
+    font-size:32px;
+  }
 
-    .welcome{
-        margin-top:40px;
-    }
+  .cards{
+    grid-template-columns:1fr;
+  }
 
-    .welcome h1{
-        font-size:34px;
-    }
+  .chat{
+    padding:20px;
+  }
 
-    .cards{
-        grid-template-columns:1fr;
-    }
+  .composer-wrap{
+    left:12px;
+    right:12px;
+    bottom:12px;
+  }
+
+  .page{
+    padding:22px;
+  }
 }
 </style>
 </head>
@@ -439,394 +492,895 @@ body:after{
 <body>
 
 <!-- LOGIN -->
-<div id="loginScreen">
+<div class="login" id="loginScreen">
 
-    <div class="loginBox">
+  <div class="login-box">
 
-        <div class="loginLogo">
-            KS<span>IEI</span>
-        </div>
-
-        <p>Your intelligent AI workspace</p>
-
-        <input id="loginName"
-               class="loginInput"
-               placeholder="Your name">
-
-        <input class="loginInput"
-               type="email"
-               placeholder="Email address">
-
-        <input class="loginInput"
-               type="password"
-               placeholder="Password">
-
-        <button class="loginBtn" onclick="enterKSIEI()">
-            Continue to KSIEI
-        </button>
-
+    <div class="login-logo">
+      KS<span>IEI</span>
     </div>
+
+    <p>Your AI Assistant</p>
+
+    <input
+      type="text"
+      id="username"
+      placeholder="Enter your name"
+    >
+
+    <input
+      type="email"
+      id="email"
+      placeholder="Email"
+    >
+
+    <button onclick="enterKSIEI()">
+      Continue
+    </button>
+
+  </div>
 
 </div>
 
 
 <!-- APP -->
-<div id="app">
+<div class="app" id="app">
 
-    <aside class="sidebar" id="sidebar">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
 
-        <div class="logo">
-            KS<span>IEI</span>
-        </div>
+    <div class="logo">
+      KS<span>IEI</span>
+    </div>
 
-        <button class="newChat" onclick="goHome()">
-            ＋ New Chat
-        </button>
+    <button class="newChat" onclick="newChat()">
+      ＋ New Chat
+    </button>
 
-        <div class="menu">
+    <div class="menu">
 
-            <button onclick="goHome()">⌂ Home</button>
+      <button onclick="openScreen('home')">
+        ⌂ Home
+      </button>
 
-            <button onclick="alert('Search will be connected next')">
-                Search
-            </button>
+      <button onclick="openScreen('search')">
+        Search
+      </button>
 
-            <button onclick="alert('Projects will be connected next')">
-                Projects
-            </button>
+      <button onclick="openScreen('projects')">
+        Projects
+      </button>
 
-            <button onclick="alert('Website Builder will be connected next')">
-                Website Builder
-            </button>
+      <button onclick="openScreen('builder')">
+        Website Builder
+      </button>
 
-            <button onclick="alert('Settings will be connected next')">
-                Settings
-            </button>
+      <button onclick="openScreen('settings')">
+        Settings
+      </button>
 
-        </div>
+    </div>
 
-    </aside>
-
-
-    <main class="main">
-
-        <div class="topbar">
-
-            <div style="display:flex;align-items:center">
-
-                <button class="mobileMenu"
-                        onclick="toggleSidebar()">
-                    ☰
-                </button>
-
-                <div class="model">
-                    KSIEI AI ▾
-                </div>
-
-            </div>
-
-            <div class="profile" id="profile">K</div>
-
-        </div>
+  </aside>
 
 
-        <section class="chatArea" id="chatArea">
+  <!-- MAIN -->
+  <main class="main">
 
-        </section>
+    <header class="topbar">
+
+      <button
+        class="mobile-menu"
+        onclick="toggleSidebar()">
+        ☰
+      </button>
+
+      <button
+        class="back-btn"
+        id="backButton"
+        onclick="goBack()"
+        style="display:none;">
+        ← Back
+      </button>
+
+      <div
+        class="screen-title"
+        id="screenTitle">
+        KSIEI
+      </div>
+
+      <select class="model">
+        <option>KSIEI AI</option>
+        <option>KSIEI Fast</option>
+        <option>KSIEI Creative</option>
+      </select>
+
+    </header>
 
 
-        <div class="composerWrap">
+    <section class="content" id="content">
+    </section>
 
-            <div class="composer">
-
-                <button class="iconBtn"
-                        onclick="alert('File upload will be added next')">
-                    +
-                </button>
-
-                <input id="prompt"
-                       placeholder="Message KSIEI...">
-
-                <!-- Modern button - NO emoji -->
-                <button class="voiceBtn"
-                        id="voiceBtn"
-                        onclick="startVoice()">
-
-                    <span class="mic"></span>
-
-                </button>
-
-                <button class="sendBtn"
-                        onclick="sendMessage()">
-                    ↑
-                </button>
-
-            </div>
-
-        </div>
-
-    </main>
+  </main>
 
 </div>
 
 
 <script>
 
-/* LOGIN */
+/* =========================
+   NAVIGATION
+========================= */
+
+let currentScreen = "home";
+
+
 function enterKSIEI(){
 
-    const name =
-        document.getElementById("loginName").value.trim();
+  const name =
+    document.getElementById("username").value.trim();
 
-    document.getElementById("loginScreen").style.display="none";
-    document.getElementById("app").style.display="block";
+  if(!name){
+    alert("Please enter your name.");
+    return;
+  }
 
-    if(name){
-        document.getElementById("profile").textContent =
-            name.charAt(0).toUpperCase();
-    }
+  localStorage.setItem("ksieiUser", name);
 
-    goHome();
+  document.getElementById("loginScreen").style.display="none";
+  document.getElementById("app").style.display="flex";
+
+  history.replaceState(
+    {screen:"home"},
+    "",
+    "#home"
+  );
+
+  renderScreen("home");
 }
 
 
-/* HOME + NEW CHAT */
-function goHome(){
+function openScreen(screen){
 
-    const chatArea =
-        document.getElementById("chatArea");
+  closeSidebar();
 
-    chatArea.innerHTML = `
+  if(screen === currentScreen){
+    return;
+  }
 
-        <div class="welcome">
+  history.pushState(
+    {screen:screen},
+    "",
+    "#" + screen
+  );
 
-            <h1>What can I help you build?</h1>
-
-            <p>
-                Ask KSIEI anything, create ideas,
-                write code, build websites and more.
-            </p>
-
-            <div class="cards">
-
-                <div class="card"
-                onclick="usePrompt('Build a modern website for my business')">
-
-                    <strong>Build a website</strong>
-
-                    <span>
-                        Create a modern website from an idea.
-                    </span>
-
-                </div>
-
-
-                <div class="card"
-                onclick="usePrompt('Give me 10 creative business ideas')">
-
-                    <strong>Brainstorm</strong>
-
-                    <span>
-                        Generate useful new ideas.
-                    </span>
-
-                </div>
-
-
-                <div class="card"
-                onclick="usePrompt('Write HTML and CSS for a website')">
-
-                    <strong>Write code</strong>
-
-                    <span>
-                        Generate and explain code.
-                    </span>
-
-                </div>
-
-
-                <div class="card"
-                onclick="usePrompt('Create a business plan')">
-
-                    <strong>Create a plan</strong>
-
-                    <span>
-                        Turn an idea into a structured plan.
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-    `;
-
-    /* IMPORTANT:
-       mobile sidebar close */
-    document
-        .getElementById("sidebar")
-        .classList.remove("open");
-
-    chatArea.scrollTop=0;
-
+  renderScreen(screen);
 }
 
 
-/* QUICK PROMPT */
-function usePrompt(text){
+function goBack(){
 
-    document.getElementById("prompt").value=text;
-
-    document.getElementById("prompt").focus();
-
+  if(history.length > 1){
+    history.back();
+  }
 }
 
 
-/* SEND MESSAGE */
-function sendMessage(){
+window.addEventListener("popstate", function(event){
 
-    const input =
-        document.getElementById("prompt");
+  const screen =
+    event.state && event.state.screen
+      ? event.state.screen
+      : "home";
 
-    const text =
-        input.value.trim();
-
-    if(!text) return;
-
-    const chatArea =
-        document.getElementById("chatArea");
-
-    const user =
-        document.createElement("div");
-
-    user.className="message userMessage";
-    user.textContent=text;
-
-    chatArea.appendChild(user);
-
-    input.value="";
-
-    setTimeout(function(){
-
-        const ai =
-            document.createElement("div");
-
-        ai.className="message aiMessage";
-
-        ai.innerHTML=
-            "<strong>KSIEI</strong><br><br>" +
-            "I'm ready to help. Real AI backend " +
-            "will be connected securely in the next stage.";
-
-        chatArea.appendChild(ai);
-
-        chatArea.scrollTop =
-            chatArea.scrollHeight;
-
-    },500);
-
-}
-
-
-/* ENTER KEY */
-document
-.getElementById("prompt")
-.addEventListener("keydown",function(e){
-
-    if(e.key==="Enter"){
-        sendMessage();
-    }
+  renderScreen(screen);
 
 });
 
 
-/* SIDEBAR */
-function toggleSidebar(){
+function newChat(){
 
-    document
-        .getElementById("sidebar")
-        .classList.toggle("open");
+  closeSidebar();
+
+  history.pushState(
+    {screen:"chat"},
+    "",
+    "#chat"
+  );
+
+  renderScreen("chat");
+}
+
+
+/* =========================
+   SCREEN RENDER
+========================= */
+
+function renderScreen(screen){
+
+  currentScreen = screen;
+
+  const content =
+    document.getElementById("content");
+
+  const backButton =
+    document.getElementById("backButton");
+
+  const title =
+    document.getElementById("screenTitle");
+
+
+  if(screen === "home"){
+
+    title.innerText = "KSIEI";
+
+    backButton.style.display = "none";
+
+    content.innerHTML = `
+
+      <div class="home">
+
+        <h1>
+          Hello, <span class="gradient">
+          ${escapeHTML(
+            localStorage.getItem("ksieiUser") || "there"
+          )}
+          </span>
+        </h1>
+
+        <p>
+          What can I help you with today?
+        </p>
+
+        <div class="cards">
+
+          <div class="card"
+               onclick="newChat()">
+
+            <h3>💬 New Chat</h3>
+
+            <p>
+              Start a fresh conversation
+              with KSIEI AI.
+            </p>
+
+          </div>
+
+          <div class="card"
+               onclick="openScreen('search')">
+
+            <h3>Search</h3>
+
+            <p>
+              Search and explore information.
+            </p>
+
+          </div>
+
+          <div class="card"
+               onclick="openScreen('projects')">
+
+            <h3>Projects</h3>
+
+            <p>
+              Manage your AI projects.
+            </p>
+
+          </div>
+
+          <div class="card"
+               onclick="openScreen('builder')">
+
+            <h3>Website Builder</h3>
+
+            <p>
+              Create websites using AI.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  if(screen === "chat"){
+
+    title.innerText = "New Chat";
+
+    backButton.style.display = "block";
+
+    content.innerHTML = `
+
+      <div class="chat" id="chatArea">
+
+        <div class="message ai">
+
+          <strong>KSIEI AI</strong>
+          <br><br>
+
+          New conversation started.
+          How can I help you?
+
+        </div>
+
+      </div>
+
+      <div class="composer-wrap">
+
+        <div class="composer">
+
+          <input
+            id="prompt"
+            type="text"
+            placeholder="Message KSIEI..."
+            onkeydown="handleEnter(event)"
+          >
+
+          <button
+            class="voice-btn"
+            id="voiceBtn"
+            onclick="startVoice()">
+
+            <span class="mic"></span>
+
+          </button>
+
+          <button
+            class="send-btn"
+            onclick="sendMessage()">
+
+            ↑
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  if(screen === "search"){
+
+    title.innerText = "Search";
+
+    backButton.style.display = "block";
+
+    content.innerHTML = `
+
+      <div class="page">
+
+        <h1>Search</h1>
+
+        <p class="page-subtitle">
+          Search information with KSIEI.
+        </p>
+
+        <input
+          class="search-box"
+          id="searchInput"
+          placeholder="Search anything..."
+          onkeydown="searchEnter(event)"
+        >
+
+        <div
+          class="panel"
+          id="searchResult">
+
+          <h3>Start searching</h3>
+
+          <p>
+            Enter something above to begin.
+          </p>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  if(screen === "projects"){
+
+    title.innerText = "Projects";
+
+    backButton.style.display = "block";
+
+    content.innerHTML = `
+
+      <div class="page">
+
+        <h1>Projects</h1>
+
+        <p class="page-subtitle">
+          Your KSIEI projects will appear here.
+        </p>
+
+        <div class="panel">
+
+          <h3>＋ Create Project</h3>
+
+          <p>
+            Create and manage your AI projects
+            from one place.
+          </p>
+
+          <button
+            class="primary"
+            onclick="alert('Project system will be connected to the backend next.')">
+
+            Create Project
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  if(screen === "builder"){
+
+    title.innerText = "Website Builder";
+
+    backButton.style.display = "block";
+
+    content.innerHTML = `
+
+      <div class="page">
+
+        <h1>Website Builder</h1>
+
+        <p class="page-subtitle">
+          Describe the website you want to create.
+        </p>
+
+        <div class="panel">
+
+          <textarea
+            class="builder-input"
+            id="websiteIdea"
+            placeholder="Example: Create a modern ecommerce website for fashion products..."
+          ></textarea>
+
+          <button
+            class="primary"
+            onclick="generateWebsite()">
+
+            Generate Website
+
+          </button>
+
+        </div>
+
+        <div
+          class="panel"
+          id="builderResult">
+
+          <h3>AI Website Builder</h3>
+
+          <p>
+            Your generated website preview
+            will appear here.
+          </p>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  if(screen === "settings"){
+
+    title.innerText = "Settings";
+
+    backButton.style.display = "block";
+
+    content.innerHTML = `
+
+      <div class="page">
+
+        <h1>Settings</h1>
+
+        <p class="page-subtitle">
+          Manage your KSIEI preferences.
+        </p>
+
+        <div class="panel">
+
+          <h3>Account</h3>
+
+          <p>
+            ${escapeHTML(
+              localStorage.getItem("ksieiUser") || "User"
+            )}
+          </p>
+
+        </div>
+
+        <div class="panel">
+
+          <h3>Theme</h3>
+
+          <p>
+            Dark mode is currently active.
+          </p>
+
+        </div>
+
+        <div class="panel">
+
+          <h3>KSIEI AI</h3>
+
+          <p>
+            AI backend and API connection
+            will be connected securely later.
+          </p>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
 
 }
 
 
-/* VOICE */
-let recognition=null;
-let listening=false;
+/* =========================
+   CHAT
+========================= */
+
+function sendMessage(){
+
+  const input =
+    document.getElementById("prompt");
+
+  if(!input){
+    return;
+  }
+
+  const text =
+    input.value.trim();
+
+  if(!text){
+    return;
+  }
+
+  const chat =
+    document.getElementById("chatArea");
+
+  chat.innerHTML += `
+
+    <div class="message user">
+      ${escapeHTML(text)}
+    </div>
+
+    <div class="message ai">
+
+      <strong>KSIEI AI</strong>
+      <br><br>
+
+      Your message was received.
+      The real AI API will be connected
+      securely in the next stage.
+
+    </div>
+
+  `;
+
+  input.value="";
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+
+function handleEnter(event){
+
+  if(event.key === "Enter"){
+    sendMessage();
+  }
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchEnter(event){
+
+  if(event.key !== "Enter"){
+    return;
+  }
+
+  const input =
+    document.getElementById("searchInput");
+
+  const result =
+    document.getElementById("searchResult");
+
+  const value =
+    input.value.trim();
+
+  if(!value){
+    result.innerHTML = `
+      <h3>Start searching</h3>
+      <p>Enter something above to begin.</p>
+    `;
+    return;
+  }
+
+  result.innerHTML = `
+
+    <h3>Search request</h3>
+
+    <p>
+      KSIEI received:
+      <strong>${escapeHTML(value)}</strong>
+    </p>
+
+    <p style="margin-top:10px;">
+      Real search will be connected
+      with the backend later.
+    </p>
+
+  `;
+}
+
+
+/* =========================
+   WEBSITE BUILDER
+========================= */
+
+function generateWebsite(){
+
+  const idea =
+    document.getElementById("websiteIdea").value.trim();
+
+  const result =
+    document.getElementById("builderResult");
+
+  if(!idea){
+    alert("Please describe your website.");
+    return;
+  }
+
+  result.innerHTML = `
+
+    <h3>Website request created</h3>
+
+    <p>
+      ${escapeHTML(idea)}
+    </p>
+
+    <p style="margin-top:12px;">
+      AI website generation will be
+      connected to the real backend next.
+    </p>
+
+  `;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+function toggleSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+}
+
+
+function closeSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+}
+
+
+/* =========================
+   VOICE INPUT
+========================= */
+
+let recognition = null;
+let listening = false;
+
 
 function startVoice(){
 
-    const button =
-        document.getElementById("voiceBtn");
+  const button =
+    document.getElementById("voiceBtn");
 
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
+  const input =
+    document.getElementById("prompt");
 
-    if(!SpeechRecognition){
+  if(!button || !input){
+    return;
+  }
 
-        alert("Voice input is not supported in this browser.");
-        return;
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
+  if(!SpeechRecognition){
+
+    alert(
+      "Voice input is not supported in this browser."
+    );
+
+    return;
+  }
+
+
+  if(listening){
+
+    if(recognition){
+      recognition.stop();
     }
 
-    if(listening){
+    return;
+  }
 
-        if(recognition){
-            recognition.stop();
-        }
 
-        return;
+  recognition =
+    new SpeechRecognition();
 
-    }
+  recognition.lang = "en-IN";
 
-    recognition =
-        new SpeechRecognition();
+  recognition.interimResults = true;
 
-    recognition.lang="en-IN";
-    recognition.interimResults=true;
-    recognition.continuous=false;
+  recognition.continuous = false;
 
-    listening=true;
+  listening = true;
 
-    button.classList.add("listening");
+  button.classList.add("listening");
 
-    recognition.onresult=function(event){
 
-        let text="";
+  recognition.onresult =
+    function(event){
 
-        for(
-            let i=event.resultIndex;
-            i<event.results.length;
-            i++
-        ){
+      let text = "";
 
-            text +=
-                event.results[i][0].transcript;
+      for(
+        let i = event.resultIndex;
+        i < event.results.length;
+        i++
+      ){
 
-        }
+        text +=
+          event.results[i][0].transcript;
 
-        document.getElementById("prompt").value=text;
+      }
+
+      input.value = text;
 
     };
 
-    recognition.onend=function(){
 
-        listening=false;
-        button.classList.remove("listening");
+  recognition.onend =
+    function(){
 
-    };
+      listening = false;
 
-    recognition.onerror=function(){
-
-        listening=false;
-        button.classList.remove("listening");
+      button.classList.remove(
+        "listening"
+      );
 
     };
 
-    recognition.start();
+
+  recognition.onerror =
+    function(){
+
+      listening = false;
+
+      button.classList.remove(
+        "listening"
+      );
+
+    };
+
+
+  recognition.start();
 
 }
+
+
+/* =========================
+   SECURITY HELPER
+========================= */
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   START APP
+========================= */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    const savedUser =
+      localStorage.getItem("ksieiUser");
+
+    if(savedUser){
+
+      document.getElementById(
+        "loginScreen"
+      ).style.display="none";
+
+      document.getElementById(
+        "app"
+      ).style.display="flex";
+
+      const hash =
+        location.hash.replace("#","");
+
+      const validScreens = [
+        "home",
+        "chat",
+        "search",
+        "projects",
+        "builder",
+        "settings"
+      ];
+
+      const startScreen =
+        validScreens.includes(hash)
+          ? hash
+          : "home";
+
+      history.replaceState(
+        {screen:startScreen},
+        "",
+        "#" + startScreen
+      );
+
+      renderScreen(startScreen);
+
+    }
+
+  }
+);
 
 </script>
 
