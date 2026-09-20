@@ -1082,26 +1082,62 @@ function sendMessage(){
 
       <strong>KSIEI AI</strong>
       <br><br>
+async function sendMessage(){
 
-      Your message was received.
-      The real AI API will be connected
-      securely in the next stage.
+  const input = document.getElementById("prompt");
+  const chat = document.getElementById("chat");
 
+  const message = input.value.trim();
+
+  if(!message) return;
+
+  chat.innerHTML += `
+    <div class="message user">
+      ${message}
     </div>
-
   `;
 
-  input.value="";
+  input.value = "";
+
+  chat.innerHTML += `
+    <div class="message assistant" id="aiReply">
+      KSIEI is thinking...
+    </div>
+  `;
+
+  chat.scrollTop = chat.scrollHeight;
+
+  try {
+
+    const response = await fetch(
+      "https://ksiei-ai-backend.onrender.com/chat",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: message
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    document.getElementById("aiReply").innerText =
+      data.reply || "Sorry, I could not get a response.";
+
+  } catch(error) {
+
+    document.getElementById("aiReply").innerText =
+      "KSIEI could not connect to the AI server.";
+
+    console.error(error);
+  }
 
   chat.scrollTop = chat.scrollHeight;
 }
-
-
-function handleEnter(event){
-
-  if(event.key === "Enter"){
-    sendMessage();
-  }
+      
 
 }
 
