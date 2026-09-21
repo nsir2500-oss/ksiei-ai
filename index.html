@@ -1517,7 +1517,7 @@ window.loginWithGoogle = async function () {
 
     console.error(error);
 
-    alert("Google login failed.");
+alert("Google login failed: " + error.code + "\n" + error.message);
 
   }
 
