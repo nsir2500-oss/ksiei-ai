@@ -1841,17 +1841,21 @@ async function(){
   const provider =
     new GoogleAuthProvider();
 
-
   provider.setCustomParameters({
     prompt:"select_account"
   });
 
-
   try{
 
-    await signInWithRedirect(
-      auth,
-      provider
+    const result =
+      await signInWithPopup(
+        auth,
+        provider
+      );
+
+    console.log(
+      "Google Login Successful:",
+      result.user.email
     );
 
   }catch(error){
@@ -1861,12 +1865,10 @@ async function(){
       error
     );
 
-
     const status =
       document.getElementById(
         "loginStatus"
       );
-
 
     if(status){
 
