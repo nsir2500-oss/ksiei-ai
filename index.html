@@ -1515,15 +1515,16 @@ window.loginWithGoogle = async function () {
 
   } catch (error) {
 
-    console.error(error);
+  console.error("GOOGLE ERROR:", error);
 
-alert("Google login failed: " + error.code + "\n" + error.message);
+  alert(
+    "Google login failed!\n\nCode: " +
+    error.code +
+    "\n\nMessage: " +
+    error.message
+  );
 
-  }
-
-};
-
-
+}
 // LOGIN STATE
 onAuthStateChanged(auth, (user) => {
 
