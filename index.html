@@ -1506,27 +1506,21 @@ const auth = getAuth(app);
 // GOOGLE LOGIN
 window.loginWithGoogle = async function () {
 
-  try {
+  const provider = new GoogleAuthProvider();
 
-    const provider = new GoogleAuthProvider();
+  try {
 
     await signInWithRedirect(auth, provider);
 
   } catch (error) {
 
-    console.error("GOOGLE ERROR:", error);
+    console.error("Google Error:", error);
 
-    alert(
-      "Google login failed!\n\nCode: " +
-      (error.code || "No code") +
-      "\n\nMessage: " +
-      (error.message || "No message")
-    );
+    alert("Google login error: " + error.code);
 
   }
 
 };
-
 
 // LOGIN STATE
 onAuthStateChanged(auth, (user) => {
