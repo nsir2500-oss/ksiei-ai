@@ -1563,10 +1563,16 @@ getRedirectResult(auth)
   })
   .catch((error) => {
 
-    console.error("Google Login Error:", error);
+    console.error("GOOGLE REDIRECT ERROR:", error);
+
+    alert(
+      "Google Login Error!\n\nCode: " +
+      (error.code || "No code") +
+      "\n\nMessage: " +
+      (error.message || "No message")
+    );
 
   });
-
 </script>
 </body>
 </html>
