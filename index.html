@@ -1481,49 +1481,60 @@ window.addEventListener(
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup
-  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+  <script type="module">
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdvPnYLm_CxQY08DvjY4Wv0cakoDiPsmY",
-    authDomain: "ksiei-70248.firebaseapp.com",
-    projectId: "ksiei-70248",
-    storageBucket: "ksiei-70248.firebasestorage.app",
-    messagingSenderId: "51970365111",
-    appId: "1:51970365111:web:ce3ab940b5057fd0335f32"
-  };
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-  window.loginWithGoogle = async function () {
+const firebaseConfig = {
+  apiKey: "AIzaSyCdvPnYL_mCxQY08DvjY4Wv0cakoDiPsmY",
+  authDomain: "ksiei-70248.firebaseapp.com",
+  projectId: "ksiei-70248",
+  storageBucket: "ksiei-70248.firebasestorage.app",
+  messagingSenderId: "51970365111",
+  appId: "1:51970365111:web:ce3ab940b5057fd0335f32"
+};
 
-    try {
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-      const provider = new GoogleAuthProvider();
+window.loginWithGoogle = async function () {
 
-      const result = await signInWithPopup(auth, provider);
+  const provider = new GoogleAuthProvider();
 
-      const user = result.user;
+  try {
+    await signInWithRedirect(auth, provider);
+  } catch (error) {
+    console.error(error);
+    alert("Google login failed.");
+  }
+
+};
+
+getRedirectResult(auth)
+  .then((result) => {
+
+    if (result && result.user) {
 
       document.getElementById("loginScreen").style.display = "none";
       document.getElementById("app").style.display = "flex";
 
-      console.log("KSIEI Login:", user.email);
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert("Google login failed. Please try again.");
-
     }
 
-  };
+  })
+  .catch((error) => {
 
+    console.error(error);
+
+  });
+
+</script>
 </script>
 </body>
 </html>
