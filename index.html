@@ -1479,10 +1479,6 @@ window.addEventListener(
 <!-- Firebase -->
 <script type="module">
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-  <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import {
@@ -1491,6 +1487,7 @@ import {
   signInWithRedirect,
   getRedirectResult
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCdvPnYL_mCxQY08DvjY4Wv0cakoDiPsmY",
@@ -1501,40 +1498,54 @@ const firebaseConfig = {
   appId: "1:51970365111:web:ce3ab940b5057fd0335f32"
 };
 
+
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 
 window.loginWithGoogle = async function () {
 
-  const provider = new GoogleAuthProvider();
-
   try {
+
+    const provider = new GoogleAuthProvider();
+
     await signInWithRedirect(auth, provider);
+
   } catch (error) {
+
     console.error(error);
-    alert("Google login failed.");
+
+    alert("Google login failed. Please try again.");
+
   }
 
 };
 
+
 getRedirectResult(auth)
+
   .then((result) => {
 
     if (result && result.user) {
 
       document.getElementById("loginScreen").style.display = "none";
+
       document.getElementById("app").style.display = "flex";
 
     }
 
   })
+
   .catch((error) => {
 
     console.error(error);
 
+    alert("Google login failed.");
+
   });
 
-</script>
+
 </script>
 </body>
 </html>
