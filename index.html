@@ -1503,7 +1503,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-
 // GOOGLE LOGIN
 window.loginWithGoogle = async function () {
 
@@ -1515,16 +1514,20 @@ window.loginWithGoogle = async function () {
 
   } catch (error) {
 
-  console.error("GOOGLE ERROR:", error);
+    console.error("GOOGLE ERROR:", error);
 
-  alert(
-    "Google login failed!\n\nCode: " +
-    error.code +
-    "\n\nMessage: " +
-    error.message
-  );
+    alert(
+      "Google login failed!\n\nCode: " +
+      (error.code || "No code") +
+      "\n\nMessage: " +
+      (error.message || "No message")
+    );
 
-}
+  }
+
+};
+
+
 // LOGIN STATE
 onAuthStateChanged(auth, (user) => {
 
@@ -1533,7 +1536,6 @@ onAuthStateChanged(auth, (user) => {
 
   if (user) {
 
-    // Google login successful
     loginScreen.style.display = "none";
     appScreen.style.display = "flex";
 
@@ -1541,7 +1543,6 @@ onAuthStateChanged(auth, (user) => {
 
   } else {
 
-    // User is not logged in
     loginScreen.style.display = "flex";
     appScreen.style.display = "none";
 
@@ -1556,14 +1557,20 @@ getRedirectResult(auth)
 
     if (result && result.user) {
 
-      console.log("Google login successful:", result.user.email);
+      console.log(
+        "Google login successful:",
+        result.user.email
+      );
 
     }
 
   })
   .catch((error) => {
 
-    console.error("GOOGLE REDIRECT ERROR:", error);
+    console.error(
+      "GOOGLE REDIRECT ERROR:",
+      error
+    );
 
     alert(
       "Google Login Error!\n\nCode: " +
