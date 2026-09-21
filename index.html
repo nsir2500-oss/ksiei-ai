@@ -1485,12 +1485,13 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithRedirect,
-  getRedirectResult
+  getRedirectResult,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCdvPnYL_mCxQY08DvjY4Wv0cakoDiPsmY",
+  apiKey: "AIzaSyCdvPnYL_m_CxQY08DvjY4Wv0cakoDiPsmY",
   authDomain: "ksiei-70248.firebaseapp.com",
   projectId: "ksiei-70248",
   storageBucket: "ksiei-70248.firebasestorage.app",
@@ -1500,10 +1501,10 @@ const firebaseConfig = {
 
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 
 
+// GOOGLE LOGIN
 window.loginWithGoogle = async function () {
 
   try {
@@ -1516,35 +1517,54 @@ window.loginWithGoogle = async function () {
 
     console.error(error);
 
-    alert("Google login failed. Please try again.");
+    alert("Google login failed.");
 
   }
 
 };
 
 
-getRedirectResult(auth)
+// LOGIN STATE
+onAuthStateChanged(auth, (user) => {
 
+  const loginScreen = document.getElementById("loginScreen");
+  const appScreen = document.getElementById("app");
+
+  if (user) {
+
+    // Google login successful
+    loginScreen.style.display = "none";
+    appScreen.style.display = "flex";
+
+    console.log("KSIEI User:", user.email);
+
+  } else {
+
+    // User is not logged in
+    loginScreen.style.display = "flex";
+    appScreen.style.display = "none";
+
+  }
+
+});
+
+
+// COMPLETE GOOGLE REDIRECT
+getRedirectResult(auth)
   .then((result) => {
 
     if (result && result.user) {
 
-      document.getElementById("loginScreen").style.display = "none";
-
-      document.getElementById("app").style.display = "flex";
+      console.log("Google login successful:", result.user.email);
 
     }
 
   })
-
   .catch((error) => {
 
-    console.error(error);
-
-    alert("Google login failed.");
+    console.error("Google Login Error:", error);
 
   });
-
 
 </script>
 </body>
