@@ -502,6 +502,25 @@ body{
 
     <p>Your AI Assistant</p>
 
+    <button class="social-login google-login" onclick="loginWithGoogle()">
+      <span class="google-icon">G</span>
+      Continue with Google
+    </button>
+
+    <button class="social-login apple-login" onclick="loginWithApple()">
+      <span class="apple-icon">●</span>
+      Continue with Apple
+    </button>
+
+    <button class="social-login phone-login" onclick="showPhoneLogin()">
+      <span class="phone-icon">+</span>
+      Continue with Phone
+    </button>
+
+    <div class="login-divider">
+      <span>OR</span>
+    </div>
+
     <input
       type="text"
       id="username"
@@ -514,13 +533,51 @@ body{
       placeholder="Email"
     >
 
-    <button onclick="enterKSIEI()">
-      Continue
+    <button class="continue-btn" onclick="enterKSIEI()">
+      Continue with Email
     </button>
+
+    <div id="phoneLoginBox" style="display:none;">
+
+      <input
+        type="tel"
+        id="phoneNumber"
+        placeholder="+91XXXXXXXXXX"
+      >
+
+      <div id="recaptcha-container"></div>
+
+      <button class="continue-btn" onclick="sendPhoneOTP()">
+        Send OTP
+      </button>
+
+      <input
+        type="text"
+        id="otpCode"
+        placeholder="Enter OTP"
+        style="display:none;"
+      >
+
+      <button
+        class="continue-btn"
+        id="verifyOtpBtn"
+        onclick="verifyPhoneOTP()"
+        style="display:none;"
+      >
+        Verify OTP
+      </button>
+
+    </div>
+
+    <div id="loginStatus"></div>
 
   </div>
 
 </div>
+
+
+<!-- APP -->
+<div class="app" id="app">
 
 
 <!-- APP -->
@@ -1419,6 +1476,54 @@ window.addEventListener(
 );
 
 </script>
+<!-- Firebase -->
+<script type="module">
 
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdvPnYLm_CxQY08DvjY4Wv0cakoDiPsmY",
+    authDomain: "ksiei-70248.firebaseapp.com",
+    projectId: "ksiei-70248",
+    storageBucket: "ksiei-70248.firebasestorage.app",
+    messagingSenderId: "51970365111",
+    appId: "1:51970365111:web:ce3ab940b5057fd0335f32"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  window.loginWithGoogle = async function () {
+
+    try {
+
+      const provider = new GoogleAuthProvider();
+
+      const result = await signInWithPopup(auth, provider);
+
+      const user = result.user;
+
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("app").style.display = "flex";
+
+      console.log("KSIEI Login:", user.email);
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Google login failed. Please try again.");
+
+    }
+
+  };
+
+</script>
 </body>
 </html>
